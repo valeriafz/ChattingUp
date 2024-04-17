@@ -1,6 +1,28 @@
+import { Link } from "react-router-dom";
 import GenderCheckBox from "./GenderCheckBox";
+import { useState } from "react";
+import useSignup from "../../hooks/useSignup";
 
 const SignUp = () => {
+  const [inputs, setInputs] = useState({
+    fullName: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+    gender: "",
+  });
+
+  const { loading, signup } = useSignup();
+
+  const handleCheckboxChange = (gender) => {
+    setInputs({ ...inputs, gender });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await signup(inputs);
+  };
+
   return (
     <div className="flex flex-col items center justify-center min-w-96 mx-auto">
       <div className="w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0">
@@ -8,7 +30,7 @@ const SignUp = () => {
           Sign Up
           <span className="text-orange-300"> ChattingUp</span>
         </h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div>
             <label className="label p-2">
               <span className="text-base label-text  text-gray-400">
@@ -25,7 +47,15 @@ const SignUp = () => {
               >
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
               </svg>
-              <input type="text" className="grow" placeholder="John Andrews" />
+              <input
+                type="text"
+                className="grow"
+                placeholder="John Andrews"
+                value={inputs.fullName}
+                onChange={(e) =>
+                  setInputs({ ...inputs, fullName: e.target.value })
+                }
+              />
             </label>
           </div>
           <div>
@@ -48,6 +78,10 @@ const SignUp = () => {
                 type="text"
                 className="grow"
                 placeholder="Enter username"
+                value={inputs.username}
+                onChange={(e) =>
+                  setInputs({ ...inputs, username: e.target.value })
+                }
               />
             </label>
           </div>
@@ -74,6 +108,10 @@ const SignUp = () => {
                 type="password"
                 className="w-full grow"
                 placeholder="Enter password"
+                value={inputs.password}
+                onChange={(e) =>
+                  setInputs({ ...inputs, password: e.target.value })
+                }
               />
             </label>
           </div>
@@ -100,10 +138,23 @@ const SignUp = () => {
                 type="password"
                 className="w-full grow"
                 placeholder="Enter password again"
+                value={inputs.confirmPassword}
+                onChange={(e) =>
+                  setInputs({ ...inputs, confirmPassword: e.target.value })
+                }
               />
             </label>
           </div>
-          <GenderCheckBox />
+          <GenderCheckBox
+            onCheckboxChange={handleCheckboxChange}
+            selectedGender={inputs.gender}
+          />
+          <Link
+            to="/login"
+            className="text-sm hover:underline text-gray-400 hover:text-orange-700 mt-2 inline-block"
+          >
+            Already have an account?
+          </Link>
           <div className="flex flex-col items-center justify-center text-center">
             <button className="btn btn-block btn-md mt-4 bg-orange-300 text-white text-xl">
               Sign Up

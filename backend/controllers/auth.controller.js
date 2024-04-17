@@ -45,7 +45,7 @@ export const signup = async (req, res) => {
       res.status(400).json({ error: "Invalid user data" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error at signing up" });
   }
 };
 
@@ -54,7 +54,7 @@ export const logout = (req, res) => {
     res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json("Logged out successfully");
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error at logging out" });
   }
 };
 
